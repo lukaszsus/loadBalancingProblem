@@ -25,6 +25,8 @@ class LoadBalancer:
             "w_least_conn": self._w_least_conn,
             "random": self._random
         }
+        if self._algorithm not in switcher:
+            raise ValueError("Algorithm isn't defined.")
         return switcher.get(self._algorithm, self._round_robin)
 
     def _refresh_server_weights(self):
