@@ -11,7 +11,8 @@ Outcomes are located in `output/*` as `.csv` files.
  5 times more connections than server with *w* weight has the same load.
  Algorithms evaluation is based on equality of servers' loads.
  
- ####Test are done for:
+#### Test are done for:
+
  a) 5 algorithms:
  * round robin,
  * weighted round robin,
