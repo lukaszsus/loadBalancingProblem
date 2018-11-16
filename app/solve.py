@@ -7,7 +7,7 @@ from typing import List
 from seclusim import generate_connections, Server, LoadBalancer
 
 num_sample = 1000
-times = [100] # , 1000] # , 10000]
+times = [1000] # , 1000] # , 10000]
 server_weights = [[1, 1],
                   [1, 5],
                   [1, 1, 1, 1],
