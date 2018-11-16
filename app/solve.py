@@ -7,7 +7,7 @@ from typing import List
 from seclusim import generate_connections, Server, LoadBalancer
 
 num_sample = 1000
-times = [100, 1000] # , 10000]
+times = [100] # , 1000] # , 10000]
 server_weights = [[1, 1],
                   [1, 5],
                   [1, 1, 1, 1],
@@ -34,6 +34,23 @@ def test_cases_to_file():
                     pickle.dump(duration, f)
 
 
+def special_test_cases_to_file():
+    """
+    Special test cases to show that least connections is quite good.
+    :return:
+    """
+    for time in times:
+        for weights in server_weights:
+            name = 'least_t' + str(time) + 's' + str(len(weights)) + 'm' + str(max(weights)) + '.pickle'
+
+            with open('../input/' + name, "wb") as f:
+                for i in range(num_sample):
+                    connections, duration = generate_connections(time, sum(weights), len(weights))
+                    # write a file
+                    pickle.dump(connections, f)
+                    pickle.dump(duration, f)
+
+
 def solve_test_cases_to_file():
     for time in times:
         for weights in server_weights:
@@ -41,8 +58,8 @@ def solve_test_cases_to_file():
             columns_names = ["algorithm", "time"]
             columns_names.extend([str(w) for w in weights])
             for algorithm in algorithms:
-                input_name = 't' + str(time) + 's' + str(len(weights)) + 'm' + str(max(weights)) + '.pickle'
-                output_name = 't' + str(time) + 's' + str(len(weights)) + 'm' + str(max(weights)) + '.csv'
+                input_name = 'least_t' + str(time) + 's' + str(len(weights)) + 'm' + str(max(weights)) + '.pickle'
+                output_name = 'least_t' + str(time) + 's' + str(len(weights)) + 'm' + str(max(weights)) + '.csv'
                 with open('../input/' + input_name, "rb") as f:
                     for i in range(num_sample):
                         print(algorithm + '_' + output_name + '_' + str(i))
@@ -79,4 +96,5 @@ def solve_single_test_case(algorithm: str, servers: List[Server], connections: L
 
 if __name__ == '__main__':
     # test_cases_to_file()
+    # special_test_cases_to_file()
     solve_test_cases_to_file()

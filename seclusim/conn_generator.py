@@ -1,6 +1,6 @@
 import random
 
-def generate_connections(time: int, servers_capacity: int):
+def generate_connections(time: int, servers_capacity: int, internal_loop_cycle: int = 1):
     """
     Generates list of list of connections' durations.
     It uses Weibull distribution to generate_connections connection duration which has two parameters:
@@ -9,10 +9,12 @@ def generate_connections(time: int, servers_capacity: int):
                 => cumulative dist fun will have a value of 1-1/e in labmda time
     :param time: duration of program (num of iterations)
     :param servers_capacity: sum of servers weights
+    :param internal_loop_cycle:
     :return: list of list of connections' durations and time to end for all of them
     """
     k = 2
     lambda_ = 10
+    multiplier = 1
     active_conn = list()
     connections = list()
 
@@ -29,7 +31,9 @@ def generate_connections(time: int, servers_capacity: int):
             num_new_conn = round(random.weibullvariate(servers_capacity, k))\
                 if len(active_conn) <= servers_capacity*10 else 0
             for j in range(num_new_conn):
-                new_conn.append(round(random.weibullvariate(lambda_, k) + 1))       # don't want to have 0
+                conn_len = round(random.weibullvariate(lambda_, k) + 1) # don't want to have 0
+                new_conn.append(conn_len*multiplier)
+                multiplier = 1 if multiplier == internal_loop_cycle else multiplier + 1
 
         connections.append(new_conn)
         active_conn.extend(new_conn)
